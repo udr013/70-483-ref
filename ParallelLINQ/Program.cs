@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ParallelLINQ
 {
@@ -42,7 +40,7 @@ namespace ParallelLINQ
             };
             // LINQ Language-INtegrated-Query
             //AsParallel will determine if run in parallel will speed things up or not and do so
-            var result = from person in people.AsParallel() where person.City == "Seattle" select person;
+            ParallelQuery<Person> result = from person in people.AsParallel() where person.City == "Seattle" select person;
 
             foreach (Person person in result)
             {
@@ -79,8 +77,8 @@ namespace ParallelLINQ
 
             Console.WriteLine("-----------------");
 
-            //Why can't this be result? because of previous parallel?
-            var bla = (from person in people.AsParallel()
+            //Note diff resulttype
+            IEnumerable bla = (from person in people.AsParallel()
                        where person.City == "Seattle"
                        orderby (person.Name)
                        select new
@@ -93,7 +91,7 @@ namespace ParallelLINQ
             foreach (var person in bla)
 
             {
-                Console.WriteLine(person.Name);
+                Console.WriteLine(person);
             }
 
             Console.WriteLine("-----------------");
