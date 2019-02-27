@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace ParallelLINQ
@@ -78,7 +79,7 @@ namespace ParallelLINQ
             Console.WriteLine("-----------------");
 
             //Note diff resulttype
-            IEnumerable bla = (from person in people.AsParallel()
+            var bla = (from person in people.AsParallel()
                        where person.City == "Seattle"
                        orderby (person.Name)
                        select new
@@ -89,9 +90,9 @@ namespace ParallelLINQ
                           .AsSequential().Take(4);
 
             foreach (var person in bla)
-
+        
             {
-                Console.WriteLine(person);
+                Console.WriteLine(person.Name);
             }
 
             Console.WriteLine("-----------------");
@@ -99,6 +100,8 @@ namespace ParallelLINQ
             result = from person in people.AsParallel() where person.City == "Seattle" select person;
             // ForAll IS parallel by nature unlike forEach and will run before the query is complete, thus will not reflect input order
             result.ForAll(person => Console.WriteLine(person.Name));
+
+          
 
             Console.WriteLine("-----------------");
 
@@ -115,10 +118,22 @@ namespace ParallelLINQ
             {
                 Console.WriteLine(e.InnerExceptions.Count + " exceptions.");
             }
- 
+
+            var customerList = new List<Person>()
+            {
+                new Person { Name = "Mark", City = "Duitsland"},
+                new Person { Name = "Mark2", City = "Duitsland"},
+                new Person { Name = "Mark3", City = "Duitsland"},
+                new Person { Name = "Mark4", City = "Duitsland"},
+            };
+
+            var otherResult = from person in customerList where person.Name == "Mark" select person;
+            var otherresult = customerList.Where(p => p.Name.Contains("3")).ToList();
 
             Console.WriteLine("Hit any button to exit");
             Console.ReadKey();
+
+
         }
 
 

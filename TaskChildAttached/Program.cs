@@ -23,12 +23,11 @@ namespace TaskChildAttached
             {
                 Console.WriteLine("Parent starts");
 
-                //remember this runs in parallel vs the java version
                 for (int i = 0; i < 10; i++)
                 {
                     int taskno = i; // we need to set i to num so not everything ends up with num 10
                     // ?? why x
-                    Task.Factory.StartNew((x) => DoChild(x), taskno, TaskCreationOptions.AttachedToParent);
+                    Task.Factory.StartNew((task) => DoChild(task), taskno, TaskCreationOptions.AttachedToParent);
                 }
             });
 
